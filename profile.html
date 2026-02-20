@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile - TouristGuide</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(45deg, #007BFF, #0056b3);
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+        .profile-section {
+            padding: 20px;
+        }
+        .profile-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+        .profile-item:last-child {
+            border-bottom: none;
+        }
+        .profile-label {
+            font-weight: bold;
+            color: #555;
+        }
+        .profile-value {
+            color: #333;
+        }
+        .btn-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            color: #fff;
+            background: #007BFF;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .btn:hover {
+            background: #0056b3;
+        }
+        .edit-form {
+            display: none;
+            padding: 20px;
+        }
+        .edit-form input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .edit-form button {
+            background: #007BFF;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .edit-form button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+  <div class="container">
+      <div class="header">
+          <h1>User Profile</h1>
+      </div>
+
+      <div class="profile-section" id="profileDisplay">
+          <div class="profile-item">
+              <span class="profile-label">Name:</span>
+              <span class="profile-value" id="displayName"></span>
+          </div>
+          <div class="profile-item">
+              <span class="profile-label">Email:</span>
+              <span class="profile-value" id="displayEmail"></span>
+          </div>
+          <div class="profile-item">
+              <span class="profile-label">Date of Birth:</span>
+              <span class="profile-value" id="displayDOB"></span>
+          </div>
+          <div class="btn-container">
+              <button class="btn" onclick="toggleEdit(true)">Edit Profile</button>
+              <a href="index.html" class="btn">Go Back</a>
+          </div>
+      </div>
+
+      <div class="edit-form" id="editProfileForm">
+          <form onsubmit="saveProfile(event)">
+              <input type="text" id="editName" placeholder="Name" required>
+              <input type="email" id="editEmail" placeholder="Email" required>
+              <input type="date" id="editDOB" required>
+              <div class="btn-container">
+                  <button type="submit" class="btn">Save</button>
+                  <button type="button" class="btn" onclick="toggleEdit(false)">Cancel</button>
+              </div>
+          </form>
+      </div>
+  </div>
+
+  <script>
+      // Check if user data exists in localStorage
+      let user = JSON.parse(localStorage.getItem('user')) || { name: '', email: '', dob: '' };
+
+      const displayName = document.getElementById('displayName');
+      const displayEmail = document.getElementById('displayEmail');
+      const displayDOB = document.getElementById('displayDOB');
+
+      const editName = document.getElementById('editName');
+      const editEmail = document.getElementById('editEmail');
+      const editDOB = document.getElementById('editDOB');
+
+      const profileDisplay = document.getElementById('profileDisplay');
+      const editForm = document.getElementById('editProfileForm');
+
+      function renderProfile() {
+          displayName.textContent = user.name;
+          displayEmail.textContent = user.email;
+          displayDOB.textContent = user.dob;
+
+          editName.value = user.name;
+          editEmail.value = user.email;
+          editDOB.value = user.dob;
+      }
+
+      function toggleEdit(isEditing) {
+          profileDisplay.style.display = isEditing ? 'none' : 'block';
+          editForm.style.display = isEditing ? 'block' : 'none';
+      }
+
+      function saveProfile(event) {
+          event.preventDefault();
+
+          // Update user object
+          user.name = editName.value.trim();
+          user.email = editEmail.value.trim();
+          user.dob = editDOB.value;
+
+          // Save in localStorage
+          localStorage.setItem('user', JSON.stringify(user));
+
+          renderProfile();
+          toggleEdit(false);
+          alert('Profile updated successfully!');
+      }
+
+      // Initial render
+      renderProfile();
+  </script>
+</body>
+</html>

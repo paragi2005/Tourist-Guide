@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - TouristGuide</title>
+    <style>
+        body {
+            background-image: url('static/img/Register.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+        }
+        .form-container {
+            background-color: rgba(88, 106, 129, 0.9);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 350px;
+        }
+        input {
+            margin: 10px 0;
+            padding: 10px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .message {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        .message.success {
+            color: #00cc44;
+        }
+        .message.error {
+            color: red;
+        }
+        .login-link {
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Create an Account</h2>
+        <form id="registerForm">
+            <input type="text" id="name" placeholder="Enter your name" required>
+            <input type="email" id="email" placeholder="Enter your email" required>
+            <input type="date" id="dob" placeholder="Date of Birth" required>
+            <input type="password" id="password" placeholder="Enter your password" required>
+            <button type="submit">Register</button>
+        </form>
+        <p class="login-link">Already have an account? <a href="login.html">Login Here</a></p>
+        <p class="message" id="message"></p>
+    </div>
+
+    <script>
+        const registerForm = document.getElementById('registerForm');
+        const messageEl = document.getElementById('message');
+
+        // Dummy storage for frontend-only registration
+        const users = [];
+
+        registerForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const dob = document.getElementById('dob').value;
+            const password = document.getElementById('password').value;
+
+            // Check if user already exists
+            const userExists = users.find(user => user.email === email);
+            if(userExists) {
+                messageEl.textContent = "Email already registered!";
+                messageEl.className = "message error";
+                return;
+            }
+
+            // Save user in dummy array
+            users.push({ name, email, dob, password });
+
+            messageEl.textContent = "Registration successful!";
+            messageEl.className = "message success";
+
+            // Redirect to login after 1.5 seconds
+            setTimeout(() => {
+                window.location.href = "login.html";
+            }, 1500);
+
+            // Reset form
+            registerForm.reset();
+        });
+    </script>
+</body>
+</html>
